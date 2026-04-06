@@ -10,9 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_010822) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_204401) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "developers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.date "founded", null: false
+    t.string "logo_url", null: false
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "game_developers", force: :cascade do |t|
+    t.integer "contribution_type", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.bigint "developer_id", null: false
+    t.bigint "game_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["developer_id"], name: "index_game_developers_on_developer_id"
+    t.index ["game_id"], name: "index_game_developers_on_game_id"
+  end
 
   create_table "games", force: :cascade do |t|
     t.boolean "active", default: true, null: false
@@ -31,4 +51,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_010822) do
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_games_on_slug"
   end
+
+  create_table "links", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "linkable_id", null: false
+    t.string "linkable_type", null: false
+    t.string "logo_url"
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.string "url", null: false
+    t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable"
+  end
+
+  add_foreign_key "game_developers", "developers"
+  add_foreign_key "game_developers", "games"
 end

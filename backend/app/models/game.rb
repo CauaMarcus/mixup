@@ -9,6 +9,7 @@ class Game < ApplicationRecord
     }
 
   VALID_HEX = /\A#?(?:[A-F0-9]{3}){1,2}\z/i
+  VALID_FORMAT = /\.(png|jpg|jpeg|gif)\z/i
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
@@ -17,9 +18,8 @@ class Game < ApplicationRecord
   validates :developer, presence: true, length: { minimum: 2 }
   validates :description, presence: true, length: { minimum: 20 }
   validates :primary_color, :secondary_color, :tertiary_color, presence: true, format: { with: VALID_HEX }
-  validates :icon_url, presence: true
-  validates :banner_url, presence: true
-
+  validates :icon_url, :banner_url, presence: true, format: { with: VALID_FORMAT }
+  validates :icon_url, :banner_url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }
   private
 
   def generate_slug
