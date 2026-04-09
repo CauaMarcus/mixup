@@ -14,7 +14,7 @@ class Api::GamesController < ApplicationController
     if @game.save
       render json: @game, status: :created
     else
-      render json: { errors: @game.errors }, status: :unprocessable_entity
+      render json: { errors: @game.errors }, status: :unprocessable_content
     end
   end
 
@@ -28,7 +28,7 @@ class Api::GamesController < ApplicationController
     if @game.update(game_params)
       render json: @game, status: :ok
     else
-      render json: { errors: @game.errors }, status: :unprocessable_entity
+      render json: { errors: @game.errors }, status: :unprocessable_content
     end
   end
 
