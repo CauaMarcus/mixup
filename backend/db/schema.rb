@@ -10,9 +10,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_204401) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_21_015452) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "character_infos", force: :cascade do |t|
+    t.text "bio", null: false
+    t.bigint "character_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "game_id", null: false
+    t.integer "height", null: false
+    t.string "icon_url", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.text "visual_description", null: false
+    t.integer "weight", null: false
+    t.index ["character_id"], name: "index_character_infos_on_character_id"
+    t.index ["game_id"], name: "index_character_infos_on_game_id"
+    t.index ["slug"], name: "index_character_infos_on_slug", unique: true
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.text "bio", null: false
+    t.datetime "created_at", null: false
+    t.date "first_appearance_date", null: false
+    t.string "first_appearance_game", null: false
+    t.string "icon_url", null: false
+    t.string "name", null: false
+    t.jsonb "search_names", default: [], null: false
+    t.string "slug", null: false
+    t.integer "sort_order", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_characters_on_slug", unique: true
+  end
 
   create_table "developers", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -22,6 +53,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_204401) do
     t.string "name", null: false
     t.string "slug", null: false
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_developers_on_slug", unique: true
   end
 
   create_table "game_developers", force: :cascade do |t|
@@ -49,7 +81,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_204401) do
     t.integer "sort_order", null: false
     t.string "tertiary_color", default: "#FF4500", null: false
     t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_games_on_slug"
+    t.index ["slug"], name: "index_games_on_slug", unique: true
   end
 
   create_table "links", force: :cascade do |t|
@@ -63,6 +95,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_204401) do
     t.index ["linkable_type", "linkable_id"], name: "index_links_on_linkable"
   end
 
+  add_foreign_key "character_infos", "characters"
+  add_foreign_key "character_infos", "games"
   add_foreign_key "game_developers", "developers"
   add_foreign_key "game_developers", "games"
 end

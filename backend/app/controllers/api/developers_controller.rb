@@ -35,11 +35,12 @@ class Api::DevelopersController < ApplicationController
   # DELETE /api/developers/:id
   def destroy
     @developer.destroy!
+    head :no_content
   end
 
   private
     def set_developer
-      @developer = Developer.find(params.expect(:id))
+      @developer = Developer.find(params.expect([:id]))
     end
 
     def developer_params

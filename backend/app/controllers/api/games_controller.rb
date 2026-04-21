@@ -1,13 +1,13 @@
 class Api::GamesController < ApplicationController
   before_action :set_game, only: %i[show update destroy]
 
-  #GET /api/games
+  # GET /api/games
   def index
     @games = Game.order(sort_order: :asc)
     render json: @games
   end
 
-  #POST /api/games
+  # POST /api/games
   def create
     @game = Game.new(game_params)
 
@@ -18,12 +18,12 @@ class Api::GamesController < ApplicationController
     end
   end
 
-  #GET /api/games/:id
+  # GET /api/games/:id
   def show
   render json: @game
   end
 
-  #PATCH  /api/games/:id
+  # PATCH  /api/games/:id
   def update
     if @game.update(game_params)
       render json: @game, status: :ok
@@ -32,7 +32,7 @@ class Api::GamesController < ApplicationController
     end
   end
 
-  #DELETE /api/games/:id
+  # DELETE /api/games/:id
   def destroy
     @game.destroy!
     head :no_content
